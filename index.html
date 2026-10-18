@@ -480,7 +480,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 // ==========================================
-// HARDCODED MICRO1 PARTNER OPPORTUNITIES
+// EXACT MICRO1 PARTNER OPPORTUNITIES
 // ==========================================
 const MICRO1_PARTNER_OPPS = [
   {
@@ -659,9 +659,8 @@ async function fetchFirestoreData() {
       }
     }
   } catch (error) {
-    // Silently fail for public data if rules prevent access, 
-    // ensuring the hardcoded micro1 links still show.
-    console.warn("Firestore fetch note:", error.message);
+    // DO NOT SHOW ERROR TOAST HERE. SILENTLY IGNORE SO HARDCODED MICRO1 LINKS STILL SHOW.
+    console.warn("Database connection note:", error.message);
   }
 }
 
