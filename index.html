@@ -2256,7 +2256,7 @@ function adminHome(){
 
   return `
   <div class="dash-head"><div><h1>Platform overview</h1><p>Moderation, users and revenue at a glance.</p></div>
-    <button class="btn btn-ghost" data-action="seed-db">Seed Initial Data</button>
+    ${DB.opportunities.length === 0 ? `<button class="btn btn-primary" data-action="seed-db">Initialize Live Platform</button>` : ''}
   </div>
   <div class="stat-grid">
     <div class="stat"><span>Live listings</span><b>${live.length}</b><em>published</em></div>
@@ -2579,29 +2579,50 @@ document.addEventListener('click', async (e) => {
       break;
     }
     case 'seed-db': {
-      if(!confirm("This will inject initial demo data into your LIVE database. Proceed?")) return;
+      if(!confirm("This will inject the full platform dataset (including micro1 links) into your LIVE database. Proceed?")) return;
       try {
         const batch = writeBatch(db);
         const today = new Date();
         const iso = (offset) => { const d = new Date(today); d.setDate(d.getDate()+offset); return d.toISOString().slice(0,10); };
-        
-        // 1. Employer
-        const empRef = doc(collection(db, "employers"));
-        batch.set(empRef, {name:'Brightline Technologies',industry:'Software & Technology',location:'Lagos, Nigeria',website:'https://brightline.example',verified:true,about:'Brightline Technologies builds fintech infrastructure for emerging markets.',size:'51–200 employees',ownerEmail:'employer@brightline.example'});
-        
-        // 2. Jobs
-        const o1 = doc(collection(db, "opportunities"));
-        batch.set(o1, {title:'Senior Frontend Engineer',slug:'senior-frontend-engineer-'+Date.now(),employerId:empRef.id,orgName:'Brightline Technologies',category:'Jobs & Employment',employmentType:'Full-time',location:'Remote — Africa',country:'Remote',remote:true,industry:'Software & Technology',experience:'Senior',salary:{disclosed:true,text:'$4,500 – $6,500 / month',min:4500},postedAt:iso(-3),deadline:iso(24),verified:true,featured:true,summary:'Own the front-end architecture of a payments platform.',description:['Brightline is looking for a Senior Frontend Engineer to lead development.'],responsibilities:['Lead front-end architecture','Build accessible interfaces'],requirements:['5+ years experience','React / TypeScript'],benefits:['Fully remote','Health cover'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
 
-        // 3. Partner (micro1)
+        // Employers
+        const e1 = doc(collection(db, "employers"));
+        batch.set(e1, {name:'Brightline Technologies',industry:'Software & Technology',location:'Lagos, Nigeria',website:'https://brightline.example',verified:true,about:'Brightline Technologies builds fintech infrastructure for emerging markets. We are a remote-first team of 120 engineers, designers and operators across Africa.',size:'51–200 employees',ownerEmail:'employer@brightline.example'});
+        
+        const e2 = doc(collection(db, "employers"));
+        batch.set(e2, {name:'Kestrel Design Studio',industry:'Creative & Design',location:'Cape Town, South Africa',website:'https://kestrel.example',verified:true,about:'A product design studio partnering with health, education and climate organisations.',size:'11–50 employees',ownerEmail:''});
+
+        const e3 = doc(collection(db, "employers"));
+        batch.set(e3, {name:'Lumen Analytics',industry:'Data & Analytics',location:'Remote',website:'https://lumen.example',verified:true,about:'Lumen Analytics helps public and private organisations turn messy data into decisions.',size:'11–50 employees',ownerEmail:''});
+
+        const e4 = doc(collection(db, "employers"));
+        batch.set(e4, {name:'micro1',industry:'AI & Technology',location:'Remote',website:'https://micro1.ai',verified:true,about:'micro1 connects global experts with AI training projects.',size:'500+ employees',ownerEmail:''});
+
+        // Standard Jobs
+        const o1 = doc(collection(db, "opportunities"));
+        batch.set(o1, {title:'Senior Frontend Engineer',slug:'senior-frontend-engineer-brightline',employerId:e1.id,orgName:'Brightline Technologies',category:'Jobs & Employment',employmentType:'Full-time',location:'Remote — Africa',country:'Remote',remote:true,industry:'Software & Technology',experience:'Senior',salary:{disclosed:true,text:'$4,500 – $6,500 / month',min:4500},postedAt:iso(-3),deadline:iso(24),verified:true,featured:true,summary:'Own the front-end architecture of a payments platform used by thousands of merchants across Africa.',description:['Brightline is looking for a Senior Frontend Engineer to lead the development of our merchant dashboard and checkout experiences.'],responsibilities:['Lead front-end architecture','Build accessible interfaces'],requirements:['5+ years experience','React / TypeScript'],benefits:['Fully remote','Health cover'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
+
         const o2 = doc(collection(db, "opportunities"));
-        batch.set(o2, {title:'Remote AI Expert Opportunities',slug:'micro1-ai-expert-'+Date.now(),employerId:'partner',orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:false, text:'Competitive'},postedAt:iso(-1),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote opportunities to contribute your professional expertise to AI projects.',description:['micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications and assessment.'],requirements:['Expertise in engineering, finance, healthcare, or law'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
+        batch.set(o2, {title:'Product Designer',slug:'product-designer-kestrel',employerId:e2.id,orgName:'Kestrel Design Studio',category:'Jobs & Employment',employmentType:'Full-time',location:'Cape Town, South Africa',country:'South Africa',remote:false,industry:'Creative & Design',experience:'Mid-level',salary:{disclosed:true,text:'R38,000 – R52,000 / month',min:38000},postedAt:iso(-6),deadline:iso(18),verified:true,featured:true,summary:'Design end-to-end product experiences for mission-driven clients.',description:['Kestrel is a small, senior design studio. We embed with client teams to design services that people actually use.'],responsibilities:['Lead design on client engagements','Run discovery research'],requirements:['3+ years of product design experience','Figma'],benefits:['Hybrid working','Studio closure'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
+
+        const o3 = doc(collection(db, "opportunities"));
+        batch.set(o3, {title:'Data Analyst — Graduate Programme',slug:'data-analyst-graduate-lumen',employerId:e3.id,orgName:'Lumen Analytics',category:'Internships & Graduate',employmentType:'Internship',location:'Remote',country:'Remote',remote:true,industry:'Data & Analytics',experience:'Entry level',salary:{disclosed:true,text:'$800 / month stipend',min:800},postedAt:iso(-2),deadline:iso(30),verified:true,featured:true,summary:'A 12-month paid graduate programme for recent graduates.',description:['Our graduate programme is designed for people at the very start of their data careers.'],responsibilities:['Complete structured curriculum','Support senior analysts'],requirements:['Graduated within the last 3 years','Basic SQL'],benefits:['Paid 12-month programme','Dedicated mentor'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
+
+        // LIVE MICRO1 REFERRALS
+        const p1 = doc(collection(db, "opportunities"));
+        batch.set(p1, {title:'Remote AI Expert Opportunities',slug:'micro1-ai-expert',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:false, text:'Competitive'},postedAt:iso(-1),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote opportunities to contribute your professional expertise to AI projects.',description:['Discover remote opportunities to contribute your professional expertise to AI projects. micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications, assessment and project requirements.', 'Applications and selection are handled by micro1. Certification does not guarantee immediate placement.'],requirements:['Expertise in engineering, finance, healthcare, or law'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
+
+        const p2 = doc(collection(db, "opportunities"));
+        batch.set(p2, {title:'Remote Various Expert Opportunities',slug:'micro1-various-expert',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:true, text:'Earn up to $300 / hour', min:300},postedAt:iso(-2),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote great various opportunities to contribute your professional expertise.',description:['Discover remote great various opportunities to contribute your professional expertise. micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications, assessment and project requirements.', 'Applications and selection are handled by micro1.'],requirements:['Professional experience in your field'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
+
+        const p3 = doc(collection(db, "opportunities"));
+        batch.set(p3, {title:'⚖️ Remote Opportunities for Lawyers/Attorneys',slug:'micro1-lawyers-attorneys',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Various Roles',location:'Remote',country:'Remote',remote:true,industry:'Legal',experience:'Expert',salary:{disclosed:true, text:'$100–$300 per hour', min:100},postedAt:iso(-3),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Are you a lawyer or attorney looking for remote work opportunities with competitive pay?',description:['Are you a lawyer or attorney looking for remote work opportunities with competitive pay?', 'Explore potential opportunities that allow you to put your legal expertise to work from anywhere.', 'Work remotely and explore opportunities aligned with your legal qualifications and experience.'],requirements:['Legal qualification'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&linkId=961aaa3d-60cb-4fc5-92b3-c73c62b4e171&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
 
         await batch.commit();
-        toast("Database seeded successfully!");
+        toast("Database initialized successfully!");
         await fetchFirestoreData();
         render();
-      } catch(err) { toast("Seeding failed: " + err.message, "error"); }
+      } catch(err) { toast("Seeding failed: " + err.message, "error"); console.error(err); }
       break;
     }
   }
