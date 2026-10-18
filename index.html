@@ -152,14 +152,7 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .site-header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--line); width: 100%;}
 .header-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;height:72px}
 .brand{display:flex;align-items:center;gap:.62rem;flex-shrink:0}
-.brand-mark{
-  width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
-  background:var(--navy);
-  color:#fff;font-weight:800;font-size:1.15rem;letter-spacing:-.03em;
-  box-shadow:0 6px 14px -6px rgba(8,26,54,.5); overflow:hidden; position:relative;
-}
-/* SVG Logo CSS enhancement */
-.brand-mark svg { width: 100%; height: 100%; }
+.brand-img{width:42px;height:42px;border-radius:10px;object-fit:contain;background:var(--navy); padding:2px;}
 .brand-text{display:flex;flex-direction:column;line-height:1}
 .brand-text strong{font-size:1.1rem;font-weight:800;letter-spacing:-.03em}
 .brand-text strong span { color: var(--brand); }
@@ -208,7 +201,7 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 }
 .hero-inner{position:relative;padding:4.6rem 0 3.6rem;z-index:1}
 .eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:.32rem .8rem;border-radius:999px;font-size:.76rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--brand)}
-.hero h1{margin-top:1.15rem;max-width:18ch;letter-spacing:-.035em; line-height: 1.25;}
+.hero h1{margin-top:1.15rem;letter-spacing:-.035em; line-height: 1.25; max-width: 900px;}
 .hero h1 .hl{color:var(--brand)}
 .hero-sub{max-width:56ch;margin-top:1.1rem;font-size:1.06rem;color:#94A3B8;line-height:1.62}
 .hero-search{
@@ -321,6 +314,23 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .cta-band p{color:#94A3B8;margin-top:.7rem;max-width:52ch;position:relative;z-index:1}
 .cta-band .row{position:relative;z-index:1}
 
+/* ---------- Services Page ---------- */
+.service-header { text-align: center; max-width: 760px; margin: 0 auto 3rem auto; }
+.service-header h1 { font-size: clamp(2rem, 3.5vw, 2.6rem); margin-bottom: 1rem; color: var(--navy); }
+.service-header p { font-size: 1.1rem; color: var(--muted); line-height: 1.6; }
+.service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.service-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 2rem; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+.service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--brand-light); }
+.service-card .s-icon { width: 50px; height: 50px; border-radius: 14px; background: var(--navy); color: var(--brand); display: grid; place-items: center; margin-bottom: 1.2rem; }
+.service-card .s-icon .ic { width: 24px; height: 24px; flex-basis: 24px; stroke-width: 2; }
+.service-card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; color: var(--navy); }
+.service-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+.service-card ul { display: grid; gap: 0.6rem; margin-bottom: 2rem; flex: 1; }
+.service-card ul li { font-size: 0.88rem; color: var(--ink-2); display: flex; gap: 0.5rem; align-items: flex-start; }
+.service-card ul li .ic { color: var(--brand); flex-shrink: 0; margin-top: 0.2rem; }
+.service-card .price-tag { display: inline-block; background: var(--brand-tint); color: var(--brand-dark); padding: 0.3rem 0.8rem; border-radius: 8px; font-weight: 800; font-size: 0.85rem; margin-bottom: 1rem; }
+.service-card .btn { margin-top: auto; }
+
 /* ---------- Dashboards ---------- */
 .dash-layout{display:grid;grid-template-columns:238px 1fr;gap:1.6rem;align-items:start;padding:2rem 0 3.4rem}
 .dash-side{position:sticky;top:86px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:.7rem;display:grid;gap:.15rem}
@@ -420,10 +430,10 @@ td .row{gap:.4rem}
 .footer-brand .brand-text strong{color:#fff}
 .footer-brand .brand-text strong span{color:var(--brand)}
 .footer-brand .brand-text em{color:#64748B}
-.footer-brand .brand-mark{background:transparent; box-shadow:none; border:1px solid rgba(255,255,255,.2);}
+.footer-brand .brand-img{background:transparent; border:1px solid rgba(255,255,255,.2);}
 
 /* ============================================================
-   MOBILE OPTIMIZATIONS (Fixed Hero & Overflow issues)
+   MOBILE OPTIMIZATIONS (Explicit Hero Fix)
    ============================================================ */
 @media (max-width:1040px){
   .dir-layout{grid-template-columns:1fr}
@@ -448,22 +458,32 @@ td .row{gap:.4rem}
   .menu-btn{display:inline-flex}
   .header-actions .btn{display:none}
   
-  /* Hero Mobile Fixes */
-  .hero-inner{padding:2.5rem 0 2rem;}
+  /* Hero Mobile Fixes - Centered & Reduced */
+  .hero-inner{
+    padding: 3rem 1rem 2.5rem; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+  }
   .hero h1 {
     margin-top: 1rem;
-    font-size: 2.1rem; 
-    max-width: 100%; /* Removes the hardcoded limit */
+    font-size: 1.9rem; /* Reduced size */
+    max-width: 100%;
     line-height: 1.2;
+    text-align: center;
   }
   .hero-sub {
     margin-top: 1rem;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+    max-width: 100%;
   }
   .hero-search {
     flex-direction: column; 
     padding: 0.8rem;
     margin-top: 1.5rem;
+    width: 100%;
   }
   .hero-search .btn {
     width: 100%;
@@ -471,6 +491,7 @@ td .row{gap:.4rem}
   .hero-quick {
     justify-content: center;
     margin-top: 1.5rem;
+    width: 100%;
   }
   .hero-quick span {
     width: 100%;
@@ -483,6 +504,7 @@ td .row{gap:.4rem}
     margin-top: 2rem;
     padding-top: 1.5rem;
     text-align: center;
+    width: 100%;
   }
   .hero-stat b {
     font-size: 1.5rem;
@@ -493,6 +515,7 @@ td .row{gap:.4rem}
   .section{padding:2.6rem 0}
   .card-pad{padding:1.15rem}
   .detail-title h1 { font-size: 1.6rem; }
+  .service-header h1 { font-size: 1.8rem; }
   
   /* Mobile Filter Drawer */
   .mobile-filter-btn { display: inline-flex; align-items: center; gap: 0.5rem; }
@@ -540,6 +563,7 @@ td .row{gap:.4rem}
   .stat-grid{grid-template-columns: 1fr 1fr;}
   .brand-text strong {font-size: 1rem;}
   .brand-text em {font-size: .48rem;}
+  .hero h1 { font-size: 1.65rem; } /* Even smaller for very small screens */
 }
 </style>
 </head>
@@ -580,24 +604,12 @@ const ICON = {
   logout:'<svg class="ic" viewBox="0 0 16 16"><path d="M6 2.4H3.4a1.4 1.4 0 00-1.4 1.4v8.4a1.4 1.4 0 001.4 1.4H6M10.6 11.2L13.8 8l-3.2-3.2M13.4 8H6.2"/></svg>',
   spark:'<svg class="ic" viewBox="0 0 16 16"><path d="M8 1.8l1.7 4.5 4.5 1.7-4.5 1.7L8 14.2 6.3 9.7 1.8 8l4.5-1.7z"/></svg>',
   filter:'<svg class="ic" viewBox="0 0 16 16"><path d="M2.5 3.5h11M4.5 8h7M6.5 12.5h3"/></svg>',
-  link:'<svg class="ic" viewBox="0 0 16 16"><path d="M6.6 9.4a3.5 3.5 0 004.9.4l2.2-2.2a3.5 3.5 0 00-4.9-4.9l-1.2 1.2"/><path d="M9.4 6.6a3.5 3.5 0 00-4.9-.4L2.3 8.4a3.5 3.5 0 004.9 4.9l1.2-1.2"/></svg>'
+  link:'<svg class="ic" viewBox="0 0 16 16"><path d="M6.6 9.4a3.5 3.5 0 004.9.4l2.2-2.2a3.5 3.5 0 00-4.9-4.9l-1.2 1.2"/><path d="M9.4 6.6a3.5 3.5 0 00-4.9-.4L2.3 8.4a3.5 3.5 0 004.9 4.9l1.2-1.2"/></svg>',
+  play:'<svg class="ic" viewBox="0 0 16 16"><polygon points="4 2.5 13 8 4 13.5"/></svg>',
+  book:'<svg class="ic" viewBox="0 0 16 16"><path d="M2 2.5h4.5a2 2 0 012 2v10a1.5 1.5 0 00-1.5-1.5H2zM14 2.5H9.5a2 2 0 00-2 2v10a1.5 1.5 0 011.5-1.5H14z"/></svg>',
+  star:'<svg class="ic" viewBox="0 0 16 16"><path d="M8 1.5l2 4 4.5.7-3.2 3.2.8 4.5L8 11.8 3.9 13.9l.8-4.5L1.5 6.2 6 5.5z"/></svg>',
+  users:'<svg class="ic" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5"/><path d="M1.5 14c0-2.2 2-4 4.5-4s4.5 1.8 4.5 4"/><circle cx="12" cy="5" r="2"/><path d="M14.5 14c0-1.8-1.2-3.3-3-3.8"/></svg>'
 };
-
-/* SVG Logo exactly matching user's provided image style */
-function logoSVG(size) {
-  return `<svg viewBox="0 0 100 100" width="${size}" height="${size}" style="display:block;">
-    <defs>
-      <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#00E676"/>
-        <stop offset="100%" stop-color="#00BFA5"/>
-      </linearGradient>
-    </defs>
-    <!-- E shape / Arrow (Approximation of the provided image) -->
-    <path d="M30 20 H80 L70 35 H50 V45 H70 L60 60 H50 V75 H30 Z" fill="url(#brandGrad)"/>
-    <!-- Stylized Arrow swoosh -->
-    <path d="M45 85 Q75 85 85 40 L90 45 L83 25 L65 32 L70 37 Q60 70 40 75 Z" fill="url(#brandGrad)" opacity="0.9"/>
-  </svg>`;
-}
 
 /* ---------- Utilities ---------- */
 const $ = (s, r=document) => r.querySelector(s);
@@ -893,8 +905,8 @@ function seedData(){
 /* ============================================================
    STATE
    ============================================================ */
-const STORE_KEY = 'earnup_hub_v4'; // bumped version
-const SESSION_KEY = 'earnup_session_v4';
+const STORE_KEY = 'earnup_hub_v5'; // bumped version
+const SESSION_KEY = 'earnup_session_v5';
 let DB, session = null;
 let filters = {q:'',category:'',country:'',type:'',industry:'',experience:'',salary:'',verified:false,remote:false,sort:'newest'};
 let afterRender = () => {};
@@ -962,6 +974,7 @@ function render(){
     if (seg.length === 0) out = pageHome();
     else if (seg[0] === 'opportunities') out = seg[1] ? pageOpportunityDetail(seg[1]) : pageOpportunities(params);
     else if (seg[0] === 'referrals') out = pageReferrals();
+    else if (seg[0] === 'seeker-services') out = pageSeekerServices();
     else if (seg[0] === 'categories') out = pageCategories();
     else if (seg[0] === 'employers') out = pageForEmployers();
     else if (seg[0] === 'pricing') out = pagePricing();
@@ -1011,15 +1024,15 @@ function headerHTML(){
   <header class="site-header">
     <div class="container header-inner">
       <a href="#/" class="brand" aria-label="EarnUp Opportunities Hub home">
-        <span class="brand-mark">${logoSVG(42)}</span>
+        <img src="5ea44439-0796-4746-8c7f-12a4dc824f07.png" class="brand-img" alt="EarnUp Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23081A36\\'/><path d=\\'M30 20 H80 L70 35 H50 V45 H70 L60 60 H50 V75 H30 Z\\' fill=\\'%2300D37B\\'/><path d=\\'M45 85 Q75 85 85 40 L90 45 L83 25 L65 32 L70 37 Q60 70 40 75 Z\\' fill=\\'%2300D37B\\'/></svg>'" />
         <span class="brand-text"><strong>EARN<span>UP</span></strong><em>OPPORTUNITIES HUB</em></span>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
         <a href="#/">Home</a>
         <a href="#/opportunities">Find Opportunities</a>
         <a href="#/referrals">Referral Opportunities</a>
+        <a href="#/seeker-services">Seeker Services</a>
         <a href="#/employers">For Employers</a>
-        <a href="#/career-resources">Career Resources</a>
       </nav>
       <div class="header-actions">
         ${u ? `
@@ -1063,6 +1076,7 @@ function headerHTML(){
       <a href="#/">Home</a>
       <a href="#/opportunities">Find Opportunities</a>
       <a href="#/referrals">Referral Opportunities</a>
+      <a href="#/seeker-services">Seeker Services</a>
       <a href="#/employers">For Employers</a>
       <a href="#/career-resources">Career Resources</a>
       <a href="#/pricing">Pricing</a>
@@ -1081,7 +1095,7 @@ function footerHTML(){
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="#/" class="brand">
-            <span class="brand-mark">${logoSVG(38)}</span>
+            <img src="5ea44439-0796-4746-8c7f-12a4dc824f07.png" class="brand-img" alt="EarnUp Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23081A36\\'/><path d=\\'M30 20 H80 L70 35 H50 V45 H70 L60 60 H50 V75 H30 Z\\' fill=\\'%2300D37B\\'/><path d=\\'M45 85 Q75 85 85 40 L90 45 L83 25 L65 32 L70 37 Q60 70 40 75 Z\\' fill=\\'%2300D37B\\'/></svg>'" />
             <span class="brand-text"><strong>EARN<span>UP</span></strong><em>OPPORTUNITIES HUB</em></span>
           </a>
           <p>A recruitment marketing and opportunities platform connecting people with employment, career pathways and income-generating possibilities.</p>
@@ -1096,11 +1110,11 @@ function footerHTML(){
           <a href="#/pricing">Pricing</a>
         </div>
         <div>
-          <h4>For Organisations</h4>
-          <a href="#/employers">Advertise an opportunity</a>
-          <a href="#/pricing">Advertising packages</a>
-          <a href="#/signup">Create employer account</a>
-          <a href="#/help">How it works</a>
+          <h4>For Seekers</h4>
+          <a href="#/seeker-services">Premium Services</a>
+          <a href="#/seeker-services">Career Services</a>
+          <a href="#/seeker-services">Skills & Readiness</a>
+          <a href="#/seeker-services">Workshops</a>
         </div>
         <div>
           <h4>Company &amp; Legal</h4>
@@ -1178,7 +1192,7 @@ function pageHome(){
   <section class="hero">
     <div class="container hero-inner">
       <span class="eyebrow">${ICON.spark} Recruitment Marketing &amp; Opportunities Platform</span>
-      <h1>Discover Opportunities.<br><span class="hl">Connect with Possibilities.</span></h1>
+      <h1>Discover Opportunities. <span class="hl">Connect with Possibilities.</span></h1>
       <p class="hero-sub">EarnUp brings jobs, internships, freelance work and career pathways together in one place — and helps organisations reach the people who need them.</p>
 
       <form class="hero-search" data-form="hero-search" role="search">
@@ -1314,6 +1328,115 @@ function pageHome(){
         <a class="btn btn-ghost" href="#/opportunities?sort=newest">See all ${ICON.arrow}</a>
       </div>
       <div class="opp-grid">${latest.map(oppCard).join('')}</div>
+    </div>
+  </section>`;
+  return { html };
+}
+
+/* ============================================================
+   SEEKER SERVICES (EXTENSION PAGE)
+   ============================================================ */
+function pageSeekerServices(){
+  const html = `
+  <section class="hero" style="padding:0">
+    <div class="container hero-inner" style="padding:4rem 0 3rem; text-align:center; align-items:center;">
+      <span class="eyebrow">${ICON.spark} Premium Services for Opportunity Seekers</span>
+      <h1 style="max-width:24ch; margin:1rem auto 1rem auto;">Discover opportunities you might otherwise miss.</h1>
+      <p class="hero-sub" style="margin:0 auto; text-align:center;">EarnUp offers optional services to help you access, qualify for, and benefit from opportunities. Keep standard browsing free, and invest in your success when you're ready.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="service-header">
+        <h2>Elevate your job search</h2>
+        <p>Whether you need a curated feed of opportunities, professional application assistance, or practical skills training, we have a service to match your goals.</p>
+      </div>
+
+      <div class="service-grid">
+        <!-- Service 1 -->
+        <div class="service-card">
+          <div class="s-icon">${ICON.star}</div>
+          <div class="price-tag">Subscription</div>
+          <h3>Premium Discovery</h3>
+          <p>A paid optional membership for people who want a more convenient, curated discovery experience.</p>
+          <ul>
+            <li>${ICON.check}<span>Curated earning opportunities from external platforms</span></li>
+            <li>${ICON.check}<span>Early alerts for selected opportunities</span></li>
+            <li>${ICON.check}<span>Personalised opportunity recommendations</span></li>
+            <li>${ICON.check}<span>Advanced filters by country, skills and eligibility</span></li>
+            <li>${ICON.check}<span>Weekly or monthly opportunity digests</span></li>
+          </ul>
+          <button class="btn btn-primary btn-block" data-action="noop">Upgrade to Premium</button>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-card">
+          <div class="s-icon">${ICON.doc}</div>
+          <div class="price-tag">Per Service or Bundle</div>
+          <h3>Career & Application Services</h3>
+          <p>Optional paid assistance for people pursuing opportunities, from CVs to interview prep.</p>
+          <ul>
+            <li>${ICON.check}<span>CV writing, reviews and improvements</span></li>
+            <li>${ICON.check}<span>Cover letters and application preparation</span></li>
+            <li>${ICON.check}<span>Professional profile optimisation</span></li>
+            <li>${ICON.check}<span>Interview preparation and mock interviews</span></li>
+            <li>${ICON.check}<span>Application document packages</span></li>
+          </ul>
+          <button class="btn btn-ghost btn-block" data-action="noop">Book a Service</button>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-card">
+          <div class="s-icon">${ICON.book}</div>
+          <div class="price-tag">One-time Purchase</div>
+          <h3>Skills & Readiness Products</h3>
+          <p>Practical resources that help you become eligible for more opportunities.</p>
+          <ul>
+            <li>${ICON.check}<span>CV and cover-letter templates</span></li>
+            <li>${ICON.check}<span>Freelancing starter guides</span></li>
+            <li>${ICON.check}<span>Remote-work readiness guides</span></li>
+            <li>${ICON.check}<span>Interview and assessment toolkits</span></li>
+            <li>${ICON.check}<span>Guides to referral and affiliate programmes</span></li>
+          </ul>
+          <button class="btn btn-ghost btn-block" data-action="noop">Browse Resources</button>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-card">
+          <div class="s-icon">${ICON.bell}</div>
+          <div class="price-tag">Free & Paid Tiers</div>
+          <h3>Personalised Alerts</h3>
+          <p>Specify your interests, location, skills and preferred opportunity types. We send carefully matched alerts.</p>
+          <ul>
+            <li>${ICON.check}<span>Basic alerts included for free</span></li>
+            <li>${ICON.check}<span>Paid tier for advanced matching</span></li>
+            <li>${ICON.check}<span>Multiple alert profiles</span></li>
+            <li>${ICON.check}<span>Customised reports</span></li>
+          </ul>
+          <button class="btn btn-ghost btn-block" data-action="noop">Manage Alerts</button>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="service-card">
+          <div class="s-icon">${ICON.users}</div>
+          <div class="price-tag">Per Workshop / Cohort</div>
+          <h3>Workshops & Guided Programmes</h3>
+          <p>Paid group sessions on job applications, remote work, freelancing, and navigating external platforms.</p>
+          <ul>
+            <li>${ICON.check}<span>Live group sessions with experts</span></li>
+            <li>${ICON.check}<span>Practical training and Q&A</span></li>
+            <li>${ICON.check}<span>Cohort-based learning</span></li>
+            <li>${ICON.check}<span>Clear learning outcomes (no income promises)</span></li>
+          </ul>
+          <button class="btn btn-ghost btn-block" data-action="noop">View Schedule</button>
+        </div>
+      </div>
+      
+      <div class="card card-pad mt-4" style="background:var(--brand-tint); border-color:#CCEEE2; text-align:center; max-width:800px; margin-left:auto; margin-right:auto;">
+        <h3 style="color:var(--navy); margin-bottom:.6rem;">Our Promise</h3>
+        <p class="sm" style="color:var(--ink-2); line-height:1.6; max-width:60ch; margin:0 auto;">We keep standard opportunity browsing and application links free. We charge for additional convenience, preparation, and personalised support — never for access to basic information, and never with promises of guaranteed employment.</p>
+      </div>
     </div>
   </section>`;
   return { html };
@@ -1984,17 +2107,14 @@ function pageContact(){
 
 function pageHelp(){
   const faqs = [
-    ['Is EarnUp free for job seekers?','Yes. Creating an account, saving opportunities, setting alerts and applying to listings is completely free for job seekers.'],
+    ['Is EarnUp free for job seekers?','Yes. Creating an account, saving opportunities, setting alerts and applying to listings is completely free for job seekers. We also offer optional paid services like CV reviews and premium discovery if you want extra support.'],
     ['Do I apply on EarnUp or on the employer\'s website?','Both methods are supported. Each listing states clearly whether applications are submitted through EarnUp or on an external website. Look for the note in the "How to apply" section of any listing.'],
     ['What are "Referral Opportunities"?','These are exclusive remote roles we source from global platforms (like micro1). When you click to view them, you go to the partner\'s site using our tracked link. If you sign up, EarnUp may earn a referral commission. The partner handles all applications.'],
+    ['What are EarnUp Seeker Services?','These are optional, paid extensions to help you succeed. They include premium discovery, CV and application services, skills resources, and workshops. You never need to pay to browse opportunities.'],
     ['How do I know a listing is genuine?','Every listing is reviewed by our team before publication. Listings from organisations that have completed our verification process carry a "Verified employer" badge. We never label an organisation verified unless it has passed that process.'],
     ['How do I report a suspicious listing?','Open the listing and use the Report button in the sidebar. Tell us what looks wrong — our moderation team reviews every report.'],
-    ['Can I save opportunities for later?','Yes. Sign in and use the save button on any listing. Saved opportunities appear in your dashboard.'],
-    ['How do opportunity alerts work?','Create an alert from your dashboard with keywords, a category and a location. We check new listings against your alert and notify you by email or in-app, depending on your preferences.'],
     ['How much does it cost to advertise?','A standard listing is free. Featured listings, sponsored placements and recruitment campaigns are paid packages. See the pricing page for details.'],
-    ['Can EarnUp guarantee I will get applicants?','No — and we would be cautious of anyone who does. We give you reach, targeting and transparent performance numbers. Outcomes depend on the role, the market and the listing itself.'],
-    ['How long does a listing stay live?','Standard listings run for 30 days unless you close them earlier. Featured and sponsored placements run for the duration of the package you purchase.'],
-    ['How do I delete my account and data?','Contact us through the contact page and we will process your request in line with our privacy policy.']
+    ['Can EarnUp guarantee I will get applicants?','No — and we would be cautious of anyone who does. We give you reach, targeting and transparent performance numbers. Outcomes depend on the role, the market and the listing itself.']
   ];
   return { html: `
   <section class="section">
@@ -2078,7 +2198,7 @@ function pageSignIn(){
     <div class="auth-side">
       <div class="inner">
         <div class="brand" style="margin-bottom:2rem">
-          <span class="brand-mark" style="background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15)">${logoSVG(38)}</span>
+          <img src="5ea44439-0796-4746-8c7f-12a4dc824f07.png" class="brand-img" alt="EarnUp Logo" style="background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23081A36\\'/><path d=\\'M30 20 H80 L70 35 H50 V45 H70 L60 60 H50 V75 H30 Z\\' fill=\\'%2300D37B\\'/><path d=\\'M45 85 Q75 85 85 40 L90 45 L83 25 L65 32 L70 37 Q60 70 40 75 Z\\' fill=\\'%2300D37B\\'/></svg>'" />
           <span class="brand-text"><strong style="color:#fff">EARN<span>UP</span></strong><em style="color:#94A3B8">OPPORTUNITIES HUB</em></span>
         </div>
         <h2>Welcome back.</h2>
@@ -2122,7 +2242,7 @@ function pageSignUp(){
     <div class="auth-side">
       <div class="inner">
         <div class="brand" style="margin-bottom:2rem">
-          <span class="brand-mark" style="background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15)">${logoSVG(38)}</span>
+          <img src="5ea44439-0796-4746-8c7f-12a4dc824f07.png" class="brand-img" alt="EarnUp Logo" style="background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15)" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100\\' height=\\'100\\' fill=\\'%23081A36\\'/><path d=\\'M30 20 H80 L70 35 H50 V45 H70 L60 60 H50 V75 H30 Z\\' fill=\\'%2300D37B\\'/><path d=\\'M45 85 Q75 85 85 40 L90 45 L83 25 L65 32 L70 37 Q60 70 40 75 Z\\' fill=\\'%2300D37B\\'/></svg>'" />
           <span class="brand-text"><strong style="color:#fff">EARN<span>UP</span></strong><em style="color:#94A3B8">OPPORTUNITIES HUB</em></span>
         </div>
         <h2>Create your free account.</h2>
