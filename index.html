@@ -538,43 +538,63 @@ let authInitialized = false;
 
 async function fetchFirestoreData() {
   try {
-    const [
-      oppsSnap, empsSnap, usersSnap, appsSnap, 
-      savedSnap, alertsSnap, campsSnap, paysSnap, repsSnap
-    ] = await Promise.all([
+    // 1. Fetch Public Data (Anyone can see jobs and employers)
+    const [oppsSnap, empsSnap] = await Promise.all([
       getDocs(collection(db, "opportunities")),
-      getDocs(collection(db, "employers")),
-      getDocs(collection(db, "users")),
-      getDocs(collection(db, "applications")),
-      getDocs(collection(db, "saved")),
-      getDocs(collection(db, "alerts")),
-      getDocs(collection(db, "campaigns")),
-      getDocs(collection(db, "payments")),
-      getDocs(collection(db, "reports"))
+      getDocs(collection(db, "employers"))
     ]);
-
+    
     DB.opportunities = oppsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
     DB.employers = empsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.users = usersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.applications = appsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.saved = savedSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.alerts = alertsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.campaigns = campsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.payments = paysSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    DB.reports = repsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
+    // 2. Fetch Private Data (Only if logged in)
+    if (currentUser) {
+      const uId = currentUser.id;
+      
+      const [savedSnap, alertsSnap, appsSnap] = await Promise.all([
+        getDocs(query(collection(db, "saved"), where("userId", "==", uId))),
+        getDocs(query(collection(db, "alerts"), where("userId", "==", uId))),
+        getDocs(query(collection(db, "applications"), where("userId", "==", uId)))
+      ]);
+      
+      DB.saved = savedSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      DB.alerts = alertsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      DB.applications = appsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      // 3. Fetch Employer Specific Data
+      if (currentUser.role === 'employer' && currentUser.employerId) {
+         const [campsSnap, paysSnap] = await Promise.all([
+           getDocs(query(collection(db, "campaigns"), where("employerId", "==", currentUser.employerId))),
+           getDocs(query(collection(db, "payments"), where("employerId", "==", currentUser.employerId)))
+         ]);
+         DB.campaigns = campsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+         DB.payments = paysSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      }
+    }
   } catch (error) {
     console.error("Error fetching data from Firestore:", error);
-    toast("Failed to connect to database. Check console.", "error");
+    // Only show error if it's a major blockage, otherwise fail silently on permissions for public view
+    if(!currentUser && error.code === 'permission-denied') {
+       // Ignore permission denied for logged-out users trying to fetch private stuff, 
+       // but with this new logic, it shouldn't happen anyway.
+    } else {
+       toast("Failed to connect to database. Check browser console.", "error");
+    }
   }
 }
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const profile = DB.users.find(u => u.email === user.email);
-    if (profile) {
-      currentUser = profile;
-    } else {
+    // We need to fetch the user profile from Firestore to get their role
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        currentUser = { id: user.uid, ...userDoc.data() };
+      } else {
+        currentUser = { id: user.uid, name: user.email.split('@')[0], email: user.email, role: 'seeker', profile: {} };
+      }
+    } catch (e) {
+      console.error("Error fetching user profile", e);
       currentUser = { id: user.uid, name: user.email.split('@')[0], email: user.email, role: 'seeker', profile: {} };
     }
   } else {
@@ -586,12 +606,15 @@ onAuthStateChanged(auth, async (user) => {
     await fetchFirestoreData();
     
     const overlay = $('#loading-overlay');
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.remove(), 400);
+    if(overlay) {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 400);
+    }
     
     if (!location.hash) location.hash = '#/';
     render();
   } else {
+    await fetchFirestoreData();
     render();
   }
 });
