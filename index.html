@@ -616,6 +616,12 @@ let DB = { opportunities: [...MICRO1_PARTNER_OPPS], employers: [], users: [], ap
 let currentUser = null; 
 let authInitialized = false;
 
+const isSaved = (id) => {
+  const u = currentUser;
+  if (!u) return false;
+  return DB.saved.some(s => s.userId === u.id && s.opportunityId === id);
+};
+
 async function fetchFirestoreData() {
   try {
     // 1. Fetch Public Data from Firestore
