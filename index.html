@@ -753,8 +753,14 @@ function render(){
     else if (seg[0] === 'help') out = pageHelp();
     else if (seg[0] === 'terms') out = pageTerms();
     else if (seg[0] === 'privacy') out = pagePrivacy();
-    else if (seg[0] === 'signin') out = pageSignIn();
-    else if (seg[0] === 'signup') out = pageSignUp();
+    else if (seg[0] === 'signin') {
+        if (currentUser) { nav('#/dashboard'); return; }
+        out = pageSignIn();
+    }
+    else if (seg[0] === 'signup') {
+        if (currentUser) { nav('#/dashboard'); return; }
+        out = pageSignUp();
+    }
     else if (seg[0] === 'dashboard') out = pageDashboard(seg[1]);
     else if (seg[0] === 'employer') out = pageEmployerArea(seg[1]);
     else out = pageNotFound();
@@ -1717,8 +1723,13 @@ function pageAbout(){
       <div class="section-eyebrow">About us</div>
       <h1 style="letter-spacing:-.03em">Bridging the gap between opportunities and the people who need them.</h1>
       <div class="prose mt-3">
-        <p>EarnUp Opportunities Hub is a recruitment marketing and opportunities platform dedicated to connecting people with employment opportunities, career pathways and income-generating possibilities.</p>
-        <p>We help employers, recruiters, businesses and opportunity providers promote opportunities to relevant audiences, while helping job seekers, graduates, professionals, freelancers and aspiring entrepreneurs discover opportunities that match their interests, skills and ambitions.</p>
+        <p>EarnUp Opportunities Hub is a recruitment marketing and opportunities platform dedicated to connecting people with employment opportunities, career pathways, and income-generating possibilities.</p>
+        <p>We help employers, recruiters, businesses, and opportunity providers promote opportunities to relevant audiences, while helping job seekers, graduates, professionals, freelancers, and aspiring entrepreneurs discover opportunities that match their interests, skills, and ambitions.</p>
+        <p>Our platform features opportunities across remote and on-site employment, internships, freelance and contract work, recruitment campaigns, and other professional and economic opportunities.</p>
+        <p>Through accessible opportunity sharing, recruitment marketing, and digital engagement, we aim to make opportunities easier to discover and help organisations reach the people they need.</p>
+        <p>At EarnUp Opportunities Hub, we believe that the right opportunity can open doors, develop talent, and create pathways to personal and professional growth.</p>
+        <p><strong>Our mission is to bridge the gap between opportunities and the people who need them.</strong></p>
+        <p style="color:var(--brand-dark); font-weight:700;">EarnUp Opportunities Hub — Discover Opportunities. Connect with Possibilities.</p>
       </div>
     </div>
   </section>` };
