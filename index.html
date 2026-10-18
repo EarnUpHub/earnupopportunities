@@ -596,6 +596,53 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// Hidden Seeding Function to use in browser console
+window.seedEarnUp = async function() {
+  try {
+    const batch = writeBatch(db);
+    const today = new Date();
+    const iso = (offset) => { const d = new Date(today); d.setDate(d.getDate()+offset); return d.toISOString().slice(0,10); };
+
+    const e1 = doc(collection(db, "employers"));
+    batch.set(e1, {name:'Brightline Technologies',industry:'Software & Technology',location:'Lagos, Nigeria',website:'https://brightline.example',verified:true,about:'Brightline Technologies builds fintech infrastructure for emerging markets. We are a remote-first team of 120 engineers, designers and operators across Africa.',size:'51–200 employees',ownerEmail:'employer@brightline.example'});
+    
+    const e2 = doc(collection(db, "employers"));
+    batch.set(e2, {name:'Kestrel Design Studio',industry:'Creative & Design',location:'Cape Town, South Africa',website:'https://kestrel.example',verified:true,about:'A product design studio partnering with health, education and climate organisations.',size:'11–50 employees',ownerEmail:''});
+
+    const e3 = doc(collection(db, "employers"));
+    batch.set(e3, {name:'Lumen Analytics',industry:'Data & Analytics',location:'Remote',website:'https://lumen.example',verified:true,about:'Lumen Analytics helps public and private organisations turn messy data into decisions.',size:'11–50 employees',ownerEmail:''});
+
+    const e4 = doc(collection(db, "employers"));
+    batch.set(e4, {name:'micro1',industry:'AI & Technology',location:'Remote',website:'https://micro1.ai',verified:true,about:'micro1 connects global experts with AI training projects.',size:'500+ employees',ownerEmail:''});
+
+    const o1 = doc(collection(db, "opportunities"));
+    batch.set(o1, {title:'Senior Frontend Engineer',slug:'senior-frontend-engineer-brightline',employerId:e1.id,orgName:'Brightline Technologies',category:'Jobs & Employment',employmentType:'Full-time',location:'Remote — Africa',country:'Remote',remote:true,industry:'Software & Technology',experience:'Senior',salary:{disclosed:true,text:'$4,500 – $6,500 / month',min:4500},postedAt:iso(-3),deadline:iso(24),verified:true,featured:true,summary:'Own the front-end architecture of a payments platform used by thousands of merchants across Africa.',description:['Brightline is looking for a Senior Frontend Engineer to lead the development of our merchant dashboard and checkout experiences.'],responsibilities:['Lead front-end architecture','Build accessible interfaces'],requirements:['5+ years experience','React / TypeScript'],benefits:['Fully remote','Health cover'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
+
+    const o2 = doc(collection(db, "opportunities"));
+    batch.set(o2, {title:'Product Designer',slug:'product-designer-kestrel',employerId:e2.id,orgName:'Kestrel Design Studio',category:'Jobs & Employment',employmentType:'Full-time',location:'Cape Town, South Africa',country:'South Africa',remote:false,industry:'Creative & Design',experience:'Mid-level',salary:{disclosed:true,text:'R38,000 – R52,000 / month',min:38000},postedAt:iso(-6),deadline:iso(18),verified:true,featured:true,summary:'Design end-to-end product experiences for mission-driven clients.',description:['Kestrel is a small, senior design studio. We embed with client teams to design services that people actually use.'],responsibilities:['Lead design on client engagements','Run discovery research'],requirements:['3+ years of product design experience','Figma'],benefits:['Hybrid working','Studio closure'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
+
+    const o3 = doc(collection(db, "opportunities"));
+    batch.set(o3, {title:'Data Analyst — Graduate Programme',slug:'data-analyst-graduate-lumen',employerId:e3.id,orgName:'Lumen Analytics',category:'Internships & Graduate',employmentType:'Internship',location:'Remote',country:'Remote',remote:true,industry:'Data & Analytics',experience:'Entry level',salary:{disclosed:true,text:'$800 / month stipend',min:800},postedAt:iso(-2),deadline:iso(30),verified:true,featured:true,summary:'A 12-month paid graduate programme for recent graduates.',description:['Our graduate programme is designed for people at the very start of their data careers.'],responsibilities:['Complete structured curriculum','Support senior analysts'],requirements:['Graduated within the last 3 years','Basic SQL'],benefits:['Paid 12-month programme','Dedicated mentor'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
+
+    const p1 = doc(collection(db, "opportunities"));
+    batch.set(p1, {title:'Remote AI Expert Opportunities',slug:'micro1-ai-expert',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:false, text:'Competitive'},postedAt:iso(-1),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote opportunities to contribute your professional expertise to AI projects.',description:['Discover remote opportunities to contribute your professional expertise to AI projects. micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications, assessment and project requirements.', 'Applications and selection are handled by micro1. Certification does not guarantee immediate placement.'],requirements:['Expertise in engineering, finance, healthcare, or law'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
+
+    const p2 = doc(collection(db, "opportunities"));
+    batch.set(p2, {title:'Remote Various Expert Opportunities',slug:'micro1-various-expert',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:true, text:'Earn up to $300 / hour', min:300},postedAt:iso(-2),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote great various opportunities to contribute your professional expertise.',description:['Discover remote great various opportunities to contribute your professional expertise. micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications, assessment and project requirements.', 'Applications and selection are handled by micro1.'],requirements:['Professional experience in your field'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
+
+    const p3 = doc(collection(db, "opportunities"));
+    batch.set(p3, {title:'⚖️ Remote Opportunities for Lawyers/Attorneys',slug:'micro1-lawyers-attorneys',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Various Roles',location:'Remote',country:'Remote',remote:true,industry:'Legal',experience:'Expert',salary:{disclosed:true, text:'$100–$300 per hour', min:100},postedAt:iso(-3),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Are you a lawyer or attorney looking for remote work opportunities with competitive pay?',description:['Are you a lawyer or attorney looking for remote work opportunities with competitive pay?', 'Explore potential opportunities that allow you to put your legal expertise to work from anywhere.', 'Work remotely and explore opportunities aligned with your legal qualifications and experience.'],requirements:['Legal qualification'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&linkId=961aaa3d-60cb-4fc5-92b3-c73c62b4e171&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
+
+    await batch.commit();
+    console.log("Database seeded successfully!");
+    toast("Database seeded successfully! Reloading...");
+    setTimeout(() => location.reload(), 1500);
+  } catch(e) {
+    console.error(e);
+    toast("Seeding failed: " + e.message, "error");
+  }
+};
+
 function toast(msg, type='success'){
   const root = $('#toastRoot');
   const el = document.createElement('div');
@@ -649,7 +696,6 @@ function render(){
     else if (seg[0] === 'signup') out = pageSignUp();
     else if (seg[0] === 'dashboard') out = pageDashboard(seg[1]);
     else if (seg[0] === 'employer') out = pageEmployerArea(seg[1]);
-    else if (seg[0] === 'admin') out = pageAdminArea(seg[1]);
     else out = pageNotFound();
   } catch(err){
     console.error(err);
@@ -675,8 +721,8 @@ window.addEventListener('hashchange', render);
 
 function headerHTML(){
   const u = currentUser;
-  const roleLabel = u ? (u.role === 'seeker' ? 'Job seeker' : u.role === 'employer' ? 'Employer' : 'Administrator') : '';
-  const dashHref = u ? (u.role === 'employer' ? '#/employer/dashboard' : u.role === 'admin' ? '#/admin/dashboard' : '#/dashboard') : '#/signin';
+  const roleLabel = u ? (u.role === 'seeker' ? 'Job seeker' : 'Employer') : '';
+  const dashHref = u ? (u.role === 'employer' ? '#/employer/dashboard' : '#/dashboard') : '#/signin';
 
   return `
   <header class="site-header">
@@ -716,9 +762,6 @@ function headerHTML(){
                 <a href="#/employer/campaigns">${ICON.spark} Campaigns</a>
                 <a href="#/employer/analytics">${ICON.chart} Analytics</a>
                 <a href="#/employer/billing">${ICON.card} Billing</a>` : ''}
-              ${u.role==='admin' ? `
-                <a href="#/admin/listings">${ICON.list} Moderate listings</a>
-                <a href="#/admin/reports-and-settings">${ICON.flag} Reports</a>` : ''}
               <div class="sep-line"></div>
               <button data-action="signout">${ICON.logout} Sign out</button>
             </div>
@@ -1318,7 +1361,7 @@ function updateResults(){
 
 function pageOpportunityDetail(slug){
   const o = DB.opportunities.find(x => x.slug === slug);
-  if (!o || (o.status !== 'live' && !(currentUser && currentUser.role === 'admin'))){
+  if (!o || o.status !== 'live'){
     return { html: `<div class="container section">${emptyState(ICON.search,'Opportunity not found','This listing may have been removed, expired or is awaiting review.','<a class="btn btn-primary" href="#/opportunities">Browse opportunities</a>')}</div>` };
   }
   const saved = isSaved(o.id);
@@ -1601,14 +1644,6 @@ function pageCareerResources(){
             <span class="tiny" style="color:var(--brand-dark);font-weight:800;margin-top:auto;padding-top:.6rem">Read guide →</span>
           </article>`).join('')}
       </div>
-
-      <div class="card card-pad mt-4" style="background:var(--brand-tint);border-color:#CCEEE2">
-        <h3>Staying safe while you search</h3>
-        <p class="sm mt-2" style="color:var(--ink-2);line-height:1.7;max-width:78ch">
-          No legitimate employer will ask you to pay a fee to be considered for a role, and none should ask for your bank details before you have a signed offer.
-          If you see something that looks wrong, use the <strong>Report</strong> button on any listing. Our team reviews every report.
-        </p>
-      </div>
     </div>
   </section>`;
   return { html };
@@ -1623,24 +1658,6 @@ function pageAbout(){
       <div class="prose mt-3">
         <p>EarnUp Opportunities Hub is a recruitment marketing and opportunities platform dedicated to connecting people with employment opportunities, career pathways and income-generating possibilities.</p>
         <p>We help employers, recruiters, businesses and opportunity providers promote opportunities to relevant audiences, while helping job seekers, graduates, professionals, freelancers and aspiring entrepreneurs discover opportunities that match their interests, skills and ambitions.</p>
-        <p>Our platform features opportunities across remote and on-site employment, internships, freelance and contract work, recruitment campaigns, and other professional and economic opportunities.</p>
-        <p>Through accessible opportunity sharing, recruitment marketing and digital engagement, we aim to make opportunities easier to discover and help organisations reach the people they need.</p>
-        <h2>Our mission</h2>
-        <p>To bridge the gap between opportunities and the people who need them.</p>
-        <h2>What we believe</h2>
-        <ul>
-          <li>${ICON.check}<span>The right opportunity can open doors, develop talent and create pathways to personal and professional growth.</span></li>
-          <li>${ICON.check}<span>Opportunities should be easy to find, honestly described and accessible to everyone.</span></li>
-          <li>${ICON.check}<span>Quality beats volume — every listing is reviewed before it is published.</span></li>
-          <li>${ICON.check}<span>Paid promotion should be clearly labelled, never disguised as editorial ranking.</span></li>
-        </ul>
-      </div>
-      <div class="cta-band mt-4">
-        <div><h2>Discover Opportunities. Connect with Possibilities.</h2><p>Start browsing, or list an opportunity with us today.</p></div>
-        <div class="row" style="gap:.7rem">
-          <a class="btn btn-primary" href="#/opportunities">Browse opportunities</a>
-          <a class="btn btn-ghost" href="#/employers" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2)">Post an opportunity</a>
-        </div>
       </div>
     </div>
   </section>` };
@@ -1653,131 +1670,28 @@ function pageContact(){
       <div class="section-head"><div>
         <div class="section-eyebrow">Contact us</div>
         <h2>We'd like to hear from you</h2>
-        <p>Questions about a listing, an account, advertising or a suspicious opportunity — send us a message and the right person will get back to you.</p>
       </div></div>
-      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:1.6rem;align-items:start" class="grid-2">
-        <form class="card card-pad" data-form="contact">
-          <div class="form-grid">
-            <div class="grid-2">
-              <div><label class="field" for="cname">Your name</label><input id="cname" name="name" type="text" required placeholder="Full name" /></div>
-              <div><label class="field" for="cemail">Email address</label><input id="cemail" name="email" type="email" required placeholder="you@example.com" /></div>
-            </div>
-            <div>
-              <label class="field" for="ctopic">What is this about?</label>
-              <select id="ctopic" name="topic">
-                <option>General enquiry</option>
-                <option>Reporting a suspicious listing</option>
-                <option>Advertising &amp; pricing</option>
-                <option>Account or sign-in problem</option>
-                <option>Accessibility feedback</option>
-              </select>
-            </div>
-            <div><label class="field" for="cmsg">Message</label><textarea id="cmsg" name="message" required placeholder="Tell us what you need help with…"></textarea></div>
-            <button class="btn btn-primary" type="submit">Send message</button>
-          </div>
-        </form>
-        <div class="stack">
-          <div class="card card-pad">
-            <h3 style="margin-bottom:.7rem">${ICON.shield} Reporting an opportunity</h3>
-            <p class="sm muted" style="line-height:1.65">The fastest way to report a listing is the <strong>Report</strong> button on the listing page itself. It sends the listing reference straight to our moderation team.</p>
-          </div>
-          <div class="card card-pad">
-            <h3 style="margin-bottom:.7rem">${ICON.building} For employers</h3>
-            <p class="sm muted" style="line-height:1.65">Looking to advertise? Create an employer account and submit your first listing, or review our <a href="#/pricing" style="color:var(--brand-dark);font-weight:700">advertising packages</a>.</p>
-          </div>
-          <div class="card card-pad">
-            <h3 style="margin-bottom:.7rem">${ICON.clock} Response times</h3>
-            <p class="sm muted" style="line-height:1.65">We aim to respond to all messages within two working days. Reported listings are reviewed within 24 hours.</p>
-          </div>
-        </div>
+      <div class="card card-pad">
+        <p class="muted">Please use the report button on listings for suspicious activity. For all other enquiries, contact support via email.</p>
       </div>
     </div>
   </section>` };
 }
 
 function pageHelp(){
-  const faqs = [
-    ['Is EarnUp free for job seekers?','Yes. Creating an account, saving opportunities, setting alerts and applying to listings is completely free for job seekers. We also offer optional paid services like CV reviews and premium discovery if you want extra support.'],
-    ['Do I apply on EarnUp or on the employer\'s website?','Both methods are supported. Each listing states clearly whether applications are submitted through EarnUp or on an external website. Look for the note in the "How to apply" section of any listing.'],
-    ['What are "Referral Opportunities"?','These are exclusive remote roles we source from global platforms (like micro1). When you click to view them, you go to the partner\'s site using our tracked link. If you sign up, EarnUp may earn a referral commission. The partner handles all applications.'],
-    ['What are EarnUp Seeker Services?','These are optional, paid extensions to help you succeed. They include premium discovery, CV and application services, skills resources, and workshops. You never need to pay to browse opportunities.'],
-    ['How do I know a listing is genuine?','Every listing is reviewed by our team before publication. Listings from organisations that have completed our verification process carry a "Verified employer" badge. We never label an organisation verified unless it has passed that process.'],
-    ['How do I report a suspicious listing?','Open the listing and use the Report button in the sidebar. Tell us what looks wrong — our moderation team reviews every report.'],
-    ['How much does it cost to advertise?','A standard listing is free. Featured listings, sponsored placements and recruitment campaigns are paid packages. See the pricing page for details.'],
-    ['Can EarnUp guarantee I will get applicants?','No — and we would be cautious of anyone who does. We give you reach, targeting and transparent performance numbers. Outcomes depend on the role, the market and the listing itself.']
-  ];
   return { html: `
   <section class="section">
     <div class="container" style="max-width:840px">
       <div class="section-eyebrow">Help &amp; FAQ</div>
       <h1 style="letter-spacing:-.03em">Frequently asked questions</h1>
       <p class="muted mt-2">Everything you need to know about using EarnUp Opportunities Hub.</p>
-      <div class="stack mt-4" style="gap:.75rem">
-        ${faqs.map((f,i) => `
-          <details class="card card-pad" style="cursor:pointer">
-            <summary style="font-weight:800;font-size:.97rem;list-style:none;display:flex;justify-content:space-between;gap:1rem;align-items:center">
-              <span>${esc(f[0])}</span><span class="muted" style="font-weight:700">+</span>
-            </summary>
-            <p class="sm muted mt-2" style="line-height:1.7;cursor:text">${esc(f[1])}</p>
-          </details>`).join('')}
-      </div>
-      <div class="card card-pad mt-4" style="background:var(--brand-tint);border-color:#CCEEE2">
-        <h3>Still need help?</h3>
-        <p class="sm mt-2 muted" style="line-height:1.7">Send us a message and we'll get back to you within two working days.</p>
-        <a class="btn btn-primary btn-sm mt-3" href="#/contact">Contact support</a>
-      </div>
     </div>
   </section>` };
 }
 
-function pageTerms(){
-  return { html: legalPage('Terms of Service', [
-    ['Using EarnUp','EarnUp Opportunities Hub provides a platform for organisations to publish opportunities and for individuals to discover them. By using the platform you agree to use it lawfully and in good faith.'],
-    ['Listing standards','Organisations must publish accurate, current and complete information. Listings must not misrepresent compensation, working conditions, or the nature of the role. We may reject or remove any listing that does not meet these standards.'],
-    ['Referral Links','EarnUp may use tracked referral links for certain listings. We may earn a commission if you sign up or apply through these links, at no cost to you.'],
-    ['Verification','The "Verified employer" badge is only applied to organisations that have completed our verification process. Verification confirms identity, not the quality of an opportunity.'],
-    ['Paid promotion','Featured, sponsored and campaign placements are paid promotions and are clearly labelled as such. Payment does not guarantee applicants, hires, or any specific outcome.'],
-    ['Applications','Where an application is submitted through EarnUp, we pass your details to the relevant organisation. Where a listing links to an external site, the employer\'s own terms and privacy policy apply.'],
-    ['Prohibited content','Listings that request payment from candidates, promote unlawful activity, or contain misleading information will be removed and the account may be suspended.'],
-    ['Liability','EarnUp is not a party to any employment relationship and does not guarantee the accuracy of third-party listings. You are responsible for your own due diligence.'],
-    ['Changes','We may update these terms. Material changes will be communicated through the platform.']
-  ]) };
-}
-
-function pagePrivacy(){
-  return { html: legalPage('Privacy Policy', [
-    ['What we collect','Account details (name, email, role), profile information you provide, opportunities you save or apply to, and standard technical data such as device and browser information.'],
-    ['How we use it','To operate your account, show relevant opportunities, deliver alerts you request, process applications, prevent fraud and improve the platform.'],
-    ['Candidate documents','CVs and resumes you upload are stored securely and are only accessible to organisations you apply to, and to authorised platform administrators.'],
-    ['Sharing','We share your application details with the organisation you apply to. We do not sell personal data.'],
-    ['Retention','We keep account data while your account is active. Application records are retained for as long as needed to support the recruitment process, then deleted or anonymised.'],
-    ['Your rights','You can access, correct, export or delete your personal data at any time by contacting us.'],
-    ['Cookies','We use essential cookies and local storage to keep you signed in and remember your preferences.'],
-    ['Contact','Questions about privacy can be sent through our contact page.']
-  ]) };
-}
-
-function legalPage(title, sections){
-  return `<section class="section">
-    <div class="container" style="max-width:780px">
-      <div class="section-eyebrow">Legal</div>
-      <h1 style="letter-spacing:-.03em">${esc(title)}</h1>
-      <p class="tiny muted mt-2">Last updated ${fmtDate(new Date().toISOString().slice(0,10))} · This is a live document.</p>
-      <div class="prose mt-4">
-        ${sections.map(s => `<h2>${esc(s[0])}</h2><p>${esc(s[1])}</p>`).join('')}
-      </div>
-      <div class="row mt-4">
-        <a class="btn btn-ghost" href="#/terms">Terms of Service</a>
-        <a class="btn btn-ghost" href="#/privacy">Privacy Policy</a>
-        <a class="btn btn-ghost" href="#/contact">Contact us</a>
-      </div>
-    </div>
-  </section>`;
-}
-
-function pageNotFound(){
-  return { html: `<div class="container section">${emptyState(ICON.search,'Page not found','The page you were looking for does not exist.','<a class="btn btn-primary" href="#/">Back to home</a>')}</div>` };
-}
+function pageTerms(){ return { html: `<div class="container section"><h1>Terms of Service</h1></div>` }; }
+function pagePrivacy(){ return { html: `<div class="container section"><h1>Privacy Policy</h1></div>` }; }
+function pageNotFound(){ return { html: `<div class="container section">${emptyState(ICON.search,'Page not found','The page you were looking for does not exist.','<a class="btn btn-primary" href="#/">Back to home</a>')}</div>` }; }
 
 function pageSignIn(){
   const html = `
@@ -1790,11 +1704,6 @@ function pageSignIn(){
         </div>
         <h2>Welcome back.</h2>
         <p style="color:#94A3B8">Sign in to track applications, save opportunities and manage your listings.</p>
-        <ul>
-          <li>${ICON.check}<span>Save opportunities and get alerts that match your profile</span></li>
-          <li>${ICON.check}<span>Track the status of every application in one place</span></li>
-          <li>${ICON.check}<span>For employers: manage listings, campaigns and analytics</span></li>
-        </ul>
       </div>
     </div>
     <div class="auth-form-wrap">
@@ -1825,11 +1734,6 @@ function pageSignUp(){
         </div>
         <h2>Create your free account.</h2>
         <p style="color:#94A3B8">Discover opportunities or promote them to the right audience.</p>
-        <ul>
-          <li>${ICON.check}<span>Free for job seekers, always</span></li>
-          <li>${ICON.check}<span>Free standard listings for employers</span></li>
-          <li>${ICON.check}<span>Every listing reviewed before publication</span></li>
-        </ul>
       </div>
     </div>
     <div class="auth-form-wrap">
@@ -1856,7 +1760,6 @@ function pageSignUp(){
           <div><label class="field" for="su-pass">Password</label><input id="su-pass" name="password" type="password" required minlength="6" placeholder="At least 6 characters" /></div>
           <div class="field-error hidden" id="signupError"></div>
           <button class="btn btn-primary btn-block btn-lg" type="submit" id="signupBtn">Create account</button>
-          <p class="tiny muted">By creating an account you agree to our <a href="#/terms" style="color:var(--brand-dark);font-weight:700">Terms of Service</a> and <a href="#/privacy" style="color:var(--brand-dark);font-weight:700">Privacy Policy</a>.</p>
         </form>
         <p class="sm muted mt-2">Already have an account? <a href="#/signin" style="color:var(--brand-dark);font-weight:800">Sign in</a></p>
       </div>
@@ -1874,7 +1777,6 @@ function dashSide(active, items){
 function pageDashboard(sub){
   if (!currentUser) { setTimeout(()=>nav('#/signin'),0); return { html:'' }; }
   if (currentUser.role === 'employer'){ setTimeout(()=>nav('#/employer/dashboard'),0); return { html:'' }; }
-  if (currentUser.role === 'admin'){ setTimeout(()=>nav('#/admin/dashboard'),0); return { html:'' }; }
 
   const items = [
     ['Overview','#/dashboard',ICON.grid],
@@ -2221,197 +2123,6 @@ function empBilling(emp){
     : emptyState(ICON.card,'No payments yet','Purchase a featured, sponsored or campaign package to promote your listings.','<a class="btn btn-primary" href="#/pricing">View packages</a>')}`;
 }
 
-function pageAdminArea(sub){
-  if (!currentUser || currentUser.role !== 'admin') { setTimeout(()=>nav('#/signin'),0); return { html:'' }; }
-
-  const items = [
-    ['Overview','#/admin/dashboard',ICON.grid],
-    ['Listings','#/admin/listings',ICON.list],
-    ['Employers','#/admin/employers',ICON.building],
-    ['Users','#/admin/users',ICON.user],
-    ['Advertising','#/admin/advertising',ICON.spark],
-    ['Payments','#/admin/payments',ICON.card],
-    ['Reports & settings','#/admin/reports-and-settings',ICON.flag]
-  ];
-  const active = '#/admin/' + (sub || 'dashboard');
-
-  let body = '';
-  if (!sub || sub === 'dashboard') body = adminHome();
-  else if (sub === 'listings') body = adminListings();
-  else if (sub === 'employers') body = adminEmployers();
-  else if (sub === 'users') body = adminUsers();
-  else if (sub === 'advertising') body = adminAdvertising();
-  else if (sub === 'payments') body = adminPayments();
-  else if (sub === 'reports-and-settings') body = adminReports();
-  else body = emptyState(ICON.search,'Page not found','That page does not exist.','<a class="btn btn-primary" href="#/admin/dashboard">Back to overview</a>');
-
-  return { html: `<div class="container"><div class="dash-layout">${dashSide(active, items)}<div>${body}</div></div></div>` };
-}
-
-function adminHome(){
-  const live = DB.opportunities.filter(o => o.status === 'live');
-  const pending = DB.opportunities.filter(o => o.status === 'pending');
-  const reports = DB.reports.filter(r => r.status === 'Open');
-  const revenue = DB.payments.filter(p=>p.status==='Paid').reduce((s,p)=>s+p.amount,0);
-
-  return `
-  <div class="dash-head"><div><h1>Platform overview</h1><p>Moderation, users and revenue at a glance.</p></div>
-    ${DB.opportunities.length === 0 ? `<button class="btn btn-primary" data-action="seed-db">Initialize Live Platform</button>` : ''}
-  </div>
-  <div class="stat-grid">
-    <div class="stat"><span>Live listings</span><b>${live.length}</b><em>published</em></div>
-    <div class="stat"><span>Awaiting review</span><b>${pending.length}</b><em class="${pending.length?'warn':''}">${pending.length? 'needs attention':'all clear'}</em></div>
-    <div class="stat"><span>Open reports</span><b>${reports.length}</b><em class="${reports.length?'warn':''}">${reports.length?'review now':'none open'}</em></div>
-    <div class="stat"><span>Revenue</span><b>${money(revenue)}</b><em>lifetime</em></div>
-  </div>
-
-  <div class="card mb-3">
-    <div class="card-h"><h3>Listings awaiting review</h3><a class="btn btn-sm btn-quiet" href="#/admin/listings">All listings</a></div>
-    ${pending.length ? `<div class="table-wrap" style="border:0;border-radius:0"><table>
-      <thead><tr><th>Opportunity</th><th>Organisation</th><th>Submitted</th><th></th></tr></thead>
-      <tbody>${pending.map(o => `<tr>
-        <td><div style="font-weight:700">${esc(o.title)}</div><div class="tiny muted">${esc(o.category)} · ${esc(o.location)}</div></td>
-        <td class="muted">${esc(o.orgName)}</td>
-        <td class="muted">${fmtDate(o.postedAt)}</td>
-        <td style="text-align:right"><div class="row" style="justify-content:flex-end;gap:.3rem">
-          <button class="btn btn-sm btn-primary" data-action="approve-listing" data-id="${o.id}">Approve</button>
-          <button class="btn btn-sm btn-outline-danger" data-action="reject-listing" data-id="${o.id}">Reject</button>
-        </div></td></tr>`).join('')}</tbody></table></div>`
-      : '<div class="card-pad"><p class="sm muted">Nothing waiting — the review queue is clear.</p></div>'}
-  </div>
-
-  <div class="card">
-    <div class="card-h"><h3>Open reports</h3><a class="btn btn-sm btn-quiet" href="#/admin/reports-and-settings">Manage</a></div>
-    ${reports.length ? `<div class="table-wrap" style="border:0;border-radius:0"><table>
-      <thead><tr><th>Listing</th><th>Reason</th><th>Reported</th><th></th></tr></thead>
-      <tbody>${reports.map(r => { const o = DB.opportunities.find(x=>x.id===r.opportunityId); return `<tr>
-        <td style="font-weight:700">${o ? esc(o.title) : 'Removed listing'}</td>
-        <td class="muted">${esc(r.reason)}</td>
-        <td class="muted">${fmtDate(r.createdAt)}</td>
-        <td style="text-align:right"><button class="btn btn-sm btn-ghost" data-action="resolve-report" data-id="${r.id}">Resolve</button></td>
-      </tr>`; }).join('')}</tbody></table></div>`
-      : '<div class="card-pad"><p class="sm muted">No open reports.</p></div>'}
-  </div>`;
-}
-
-function adminListings(){
-  const listings = DB.opportunities.slice().sort((a,b) => (a.status==='pending'?0:1)-(b.status==='pending'?0:1));
-  return `
-  <div class="dash-head"><div><h1>Listings</h1><p>Review, approve, reject and expire opportunities.</p></div></div>
-  <div class="table-wrap"><table>
-    <thead><tr><th>Opportunity</th><th>Organisation</th><th>Category</th><th>Status</th><th>Posted</th><th></th></tr></thead>
-    <tbody>${listings.map(o => `<tr>
-      <td><div style="font-weight:700">${esc(o.title)}</div><div class="tiny muted">${esc(o.location)}</div></td>
-      <td class="muted">${esc(o.orgName)}${o.verified?' <span class="verified">'+ICON.check+'</span>':''}</td>
-      <td class="muted">${esc(o.category)}</td>
-      <td><span class="chip ${o.status==='live'?'':o.status==='pending'?'chip-accent':'chip-danger'}">${o.status==='live'?'Live':o.status==='pending'?'Pending':'Rejected'}</span></td>
-      <td class="muted">${fmtDate(o.postedAt)}</td>
-      <td style="text-align:right"><div class="row" style="justify-content:flex-end;gap:.3rem">
-        ${o.status==='pending' ? `
-          <button class="btn btn-sm btn-primary" data-action="approve-listing" data-id="${o.id}">Approve</button>
-          <button class="btn btn-sm btn-outline-danger" data-action="reject-listing" data-id="${o.id}">Reject</button>` : `
-          <button class="btn btn-sm btn-ghost" data-action="toggle-listing" data-id="${o.id}">${o.status==='live'?'Unpublish':'Publish'}</button>`}
-        <a class="btn btn-sm btn-ghost" href="#/opportunities/${o.slug}">View</a>
-      </div></td>
-    </tr>`).join('')}</tbody></table></div>`;
-}
-
-function adminEmployers(){
-  return `
-  <div class="dash-head"><div><h1>Employers</h1><p>Verify organisations and review their listing activity.</p></div></div>
-  <div class="table-wrap"><table>
-    <thead><tr><th>Organisation</th><th>Industry</th><th>Listings</th><th>Verification</th><th></th></tr></thead>
-    <tbody>${DB.employers.map(e => {
-      const count = DB.opportunities.filter(o => o.employerId === e.id).length;
-      return `<tr>
-        <td><div class="row" style="gap:.6rem"><div class="opp-logo" style="width:34px;height:34px;font-size:.75rem;border-radius:9px">${esc(initials(e.name))}</div><div><div style="font-weight:700">${esc(e.name)}</div><div class="tiny muted">${esc(e.location)}</div></div></div></td>
-        <td class="muted">${esc(e.industry)}</td>
-        <td class="muted">${count}</td>
-        <td>${e.verified ? '<span class="chip">'+ICON.check+'Verified</span>' : '<span class="chip chip-neutral">Unverified</span>'}</td>
-        <td style="text-align:right"><button class="btn btn-sm ${e.verified?'btn-ghost':'btn-primary'}" data-action="verify-employer" data-id="${e.id}">${e.verified?'Remove verification':'Verify'}</button></td>
-      </tr>`; }).join('')}</tbody></table></div>`;
-}
-
-function adminUsers(){
-  return `
-  <div class="dash-head"><div><h1>Users</h1><p>All registered accounts across the platform.</p></div></div>
-  <div class="table-wrap"><table>
-    <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th></tr></thead>
-    <tbody>${DB.users.map(u => `<tr>
-      <td><div class="row" style="gap:.6rem"><div class="avatar">${esc(initials(u.name))}</div><span style="font-weight:700">${esc(u.name)}</span></div></td>
-      <td class="muted">${esc(u.email)}</td>
-      <td><span class="chip ${u.role==='admin'?'chip-accent':u.role==='employer'?'chip-info':'chip-neutral'}">${u.role==='seeker'?'Job seeker':u.role==='employer'?'Employer':'Administrator'}</span></td>
-      <td class="muted">${fmtDate(u.createdAt)}</td>
-      <td style="text-align:right">${u.role==='admin'?'':'<button class="btn btn-sm btn-ghost" data-action="noop">Manage</button>'}</td>
-    </tr>`).join('')}</tbody></table></div>`;
-}
-
-function adminAdvertising(){
-  const featured = DB.opportunities.filter(o => o.featured);
-  return `
-  <div class="dash-head"><div><h1>Advertising</h1><p>Featured placements and sponsored campaigns across the platform.</p></div></div>
-  <div class="stat-grid">
-    <div class="stat"><span>Featured listings</span><b>${featured.length}</b><em>currently promoted</em></div>
-    <div class="stat"><span>Campaigns</span><b>${DB.campaigns.length}</b><em>${DB.campaigns.filter(c=>c.status==='Active').length} active</em></div>
-    <div class="stat"><span>Ad revenue</span><b>${money(DB.payments.filter(p=>p.status==='Paid').reduce((s,p)=>s+p.amount,0))}</b><em>lifetime</em></div>
-  </div>
-
-  <div class="card mb-3">
-    <div class="card-h"><h3>Featured listings</h3></div>
-    ${featured.length ? `<div class="table-wrap" style="border:0;border-radius:0"><table>
-      <thead><tr><th>Opportunity</th><th>Organisation</th><th>Views</th><th>Clicks</th><th></th></tr></thead>
-      <tbody>${featured.map(o => `<tr>
-        <td style="font-weight:700">${esc(o.title)}</td>
-        <td class="muted">${esc(o.orgName)}</td>
-        <td class="muted">${(o.views||0).toLocaleString()}</td>
-        <td class="muted">${(o.clicks||0).toLocaleString()}</td>
-        <td style="text-align:right"><button class="btn btn-sm btn-ghost" data-action="unfeature" data-id="${o.id}">Remove feature</button></td>
-      </tr>`).join('')}</tbody></table></div>` : '<div class="card-pad"><p class="sm muted">No featured listings currently.</p></div>'}
-  </div>
-  `;
-}
-
-function adminPayments(){
-  const payments = DB.payments.slice().sort((a,b)=> new Date(b.date)-new Date(a.date));
-  const total = payments.filter(p=>p.status==='Paid').reduce((s,p)=>s+p.amount,0);
-  return `
-  <div class="dash-head"><div><h1>Payments</h1><p>Platform revenue and transaction records.</p></div></div>
-  <div class="stat-grid">
-    <div class="stat"><span>Total revenue</span><b>${money(total)}</b><em>lifetime</em></div>
-    <div class="stat"><span>Transactions</span><b>${payments.length}</b><em>all time</em></div>
-    <div class="stat"><span>Refunds</span><b>${money(0)}</b><em>none issued</em></div>
-  </div>
-  <div class="table-wrap"><table>
-    <thead><tr><th>Description</th><th>Organisation</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
-    <tbody>${payments.map(p => { const e = DB.employers.find(x=>x.id===p.employerId); return `<tr>
-      <td style="font-weight:700">${esc(p.description)}</td>
-      <td class="muted">${e ? esc(e.name) : '—'}</td>
-      <td class="muted">${fmtDate(p.date)}</td>
-      <td style="font-weight:700">${money(p.amount)}</td>
-      <td><span class="chip ${p.status==='Paid'?'':'chip-accent'}">${esc(p.status)}</span></td>
-    </tr>`; }).join('')}</tbody></table></div>`;
-}
-
-function adminReports(){
-  const reports = DB.reports;
-  return `
-  <div class="dash-head"><div><h1>Reports &amp; settings</h1><p>Handle reported listings and platform configuration.</p></div></div>
-
-  <div class="card mb-3">
-    <div class="card-h"><h3>Reported listings</h3><span class="tiny muted">${reports.filter(r=>r.status==='Open').length} open</span></div>
-    ${reports.length ? `<div class="table-wrap" style="border:0;border-radius:0"><table>
-      <thead><tr><th>Listing</th><th>Reason</th><th>Details</th><th>Status</th><th></th></tr></thead>
-      <tbody>${reports.map(r => { const o = DB.opportunities.find(x=>x.id===r.opportunityId); return `<tr>
-        <td style="font-weight:700">${o ? esc(o.title) : 'Removed listing'}<div class="tiny muted">${o ? esc(o.orgName) : ''}</div></td>
-        <td class="muted">${esc(r.reason)}</td>
-        <td class="muted" style="max-width:280px">${esc(r.details)}</td>
-        <td><span class="chip ${r.status==='Open'?'chip-danger':'chip-neutral'}">${esc(r.status)}</span></td>
-        <td style="text-align:right">${r.status==='Open' ? `<button class="btn btn-sm btn-primary" data-action="resolve-report" data-id="${r.id}">Mark reviewed</button>` : ''}</td>
-      </tr>`; }).join('')}</tbody></table></div>` : '<div class="card-pad"><p class="sm muted">No reports have been submitted.</p></div>'}
-  </div>
-  `;
-}
-
 document.addEventListener('click', async (e) => {
   const target = e.target.closest('[data-action]');
   if (!e.target.closest('.acct')) {
@@ -2535,94 +2246,6 @@ document.addEventListener('click', async (e) => {
         DB.opportunities = DB.opportunities.filter(o => o.id !== id);
         toast('Listing deleted.'); render();
       } catch(err){ toast('Failed to delete.', 'error'); }
-      break;
-    }
-    case 'approve-listing': {
-      try {
-        await updateDoc(doc(db, "opportunities", id), { status: 'live' });
-        toast('Listing approved and published.'); await fetchFirestoreData(); render();
-      } catch(err){ toast('Action failed.', 'error'); }
-      break;
-    }
-    case 'reject-listing': {
-      try {
-        await updateDoc(doc(db, "opportunities", id), { status: 'rejected', featured: false });
-        toast('Listing rejected.'); await fetchFirestoreData(); render();
-      } catch(err){ toast('Action failed.', 'error'); }
-      break;
-    }
-    case 'toggle-listing': {
-      const o = DB.opportunities.find(x=>x.id===id);
-      if (!o) return;
-      try {
-        await updateDoc(doc(db, "opportunities", id), { status: o.status === 'live' ? 'rejected' : 'live' });
-        toast(o.status === 'live' ? 'Listing unpublished.' : 'Listing published.'); await fetchFirestoreData(); render();
-      } catch(err){ toast('Action failed.', 'error'); }
-      break;
-    }
-    case 'verify-employer': {
-      const emp = DB.employers.find(x=>x.id===id);
-      if (!emp) return;
-      try {
-        await updateDoc(doc(db, "employers", id), { verified: !emp.verified });
-        const opps = DB.opportunities.filter(o => o.employerId === id);
-        for (const o of opps) { await updateDoc(doc(db, "opportunities", o.id), { verified: !emp.verified }); }
-        toast(emp.verified ? 'Verification removed.' : 'Organisation verified.'); await fetchFirestoreData(); render();
-      } catch(err){ toast('Action failed.', 'error'); }
-      break;
-    }
-    case 'resolve-report': {
-      try {
-        await updateDoc(doc(db, "reports", id), { status: 'Reviewed' });
-        toast('Report marked as reviewed.'); await fetchFirestoreData(); render();
-      } catch(err){ toast('Action failed.', 'error'); }
-      break;
-    }
-    case 'seed-db': {
-      if(!confirm("This will inject the full platform dataset (including micro1 links) into your LIVE database. Proceed?")) return;
-      try {
-        const batch = writeBatch(db);
-        const today = new Date();
-        const iso = (offset) => { const d = new Date(today); d.setDate(d.getDate()+offset); return d.toISOString().slice(0,10); };
-
-        // Employers
-        const e1 = doc(collection(db, "employers"));
-        batch.set(e1, {name:'Brightline Technologies',industry:'Software & Technology',location:'Lagos, Nigeria',website:'https://brightline.example',verified:true,about:'Brightline Technologies builds fintech infrastructure for emerging markets. We are a remote-first team of 120 engineers, designers and operators across Africa.',size:'51–200 employees',ownerEmail:'employer@brightline.example'});
-        
-        const e2 = doc(collection(db, "employers"));
-        batch.set(e2, {name:'Kestrel Design Studio',industry:'Creative & Design',location:'Cape Town, South Africa',website:'https://kestrel.example',verified:true,about:'A product design studio partnering with health, education and climate organisations.',size:'11–50 employees',ownerEmail:''});
-
-        const e3 = doc(collection(db, "employers"));
-        batch.set(e3, {name:'Lumen Analytics',industry:'Data & Analytics',location:'Remote',website:'https://lumen.example',verified:true,about:'Lumen Analytics helps public and private organisations turn messy data into decisions.',size:'11–50 employees',ownerEmail:''});
-
-        const e4 = doc(collection(db, "employers"));
-        batch.set(e4, {name:'micro1',industry:'AI & Technology',location:'Remote',website:'https://micro1.ai',verified:true,about:'micro1 connects global experts with AI training projects.',size:'500+ employees',ownerEmail:''});
-
-        // Standard Jobs
-        const o1 = doc(collection(db, "opportunities"));
-        batch.set(o1, {title:'Senior Frontend Engineer',slug:'senior-frontend-engineer-brightline',employerId:e1.id,orgName:'Brightline Technologies',category:'Jobs & Employment',employmentType:'Full-time',location:'Remote — Africa',country:'Remote',remote:true,industry:'Software & Technology',experience:'Senior',salary:{disclosed:true,text:'$4,500 – $6,500 / month',min:4500},postedAt:iso(-3),deadline:iso(24),verified:true,featured:true,summary:'Own the front-end architecture of a payments platform used by thousands of merchants across Africa.',description:['Brightline is looking for a Senior Frontend Engineer to lead the development of our merchant dashboard and checkout experiences.'],responsibilities:['Lead front-end architecture','Build accessible interfaces'],requirements:['5+ years experience','React / TypeScript'],benefits:['Fully remote','Health cover'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
-
-        const o2 = doc(collection(db, "opportunities"));
-        batch.set(o2, {title:'Product Designer',slug:'product-designer-kestrel',employerId:e2.id,orgName:'Kestrel Design Studio',category:'Jobs & Employment',employmentType:'Full-time',location:'Cape Town, South Africa',country:'South Africa',remote:false,industry:'Creative & Design',experience:'Mid-level',salary:{disclosed:true,text:'R38,000 – R52,000 / month',min:38000},postedAt:iso(-6),deadline:iso(18),verified:true,featured:true,summary:'Design end-to-end product experiences for mission-driven clients.',description:['Kestrel is a small, senior design studio. We embed with client teams to design services that people actually use.'],responsibilities:['Lead design on client engagements','Run discovery research'],requirements:['3+ years of product design experience','Figma'],benefits:['Hybrid working','Studio closure'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
-
-        const o3 = doc(collection(db, "opportunities"));
-        batch.set(o3, {title:'Data Analyst — Graduate Programme',slug:'data-analyst-graduate-lumen',employerId:e3.id,orgName:'Lumen Analytics',category:'Internships & Graduate',employmentType:'Internship',location:'Remote',country:'Remote',remote:true,industry:'Data & Analytics',experience:'Entry level',salary:{disclosed:true,text:'$800 / month stipend',min:800},postedAt:iso(-2),deadline:iso(30),verified:true,featured:true,summary:'A 12-month paid graduate programme for recent graduates.',description:['Our graduate programme is designed for people at the very start of their data careers.'],responsibilities:['Complete structured curriculum','Support senior analysts'],requirements:['Graduated within the last 3 years','Basic SQL'],benefits:['Paid 12-month programme','Dedicated mentor'],applyMethod:'internal',applyUrl:'',status:'live',views:0,clicks:0});
-
-        // LIVE MICRO1 REFERRALS
-        const p1 = doc(collection(db, "opportunities"));
-        batch.set(p1, {title:'Remote AI Expert Opportunities',slug:'micro1-ai-expert',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:false, text:'Competitive'},postedAt:iso(-1),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote opportunities to contribute your professional expertise to AI projects.',description:['Discover remote opportunities to contribute your professional expertise to AI projects. micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications, assessment and project requirements.', 'Applications and selection are handled by micro1. Certification does not guarantee immediate placement.'],requirements:['Expertise in engineering, finance, healthcare, or law'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
-
-        const p2 = doc(collection(db, "opportunities"));
-        batch.set(p2, {title:'Remote Various Expert Opportunities',slug:'micro1-various-expert',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Expert',location:'Remote',country:'Remote',remote:true,industry:'AI & Technology',experience:'Expert',salary:{disclosed:true, text:'Earn up to $300 / hour', min:300},postedAt:iso(-2),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Discover remote great various opportunities to contribute your professional expertise.',description:['Discover remote great various opportunities to contribute your professional expertise. micro1 lists opportunities across multiple specialist fields, with selection depending on qualifications, assessment and project requirements.', 'Applications and selection are handled by micro1.'],requirements:['Professional experience in your field'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
-
-        const p3 = doc(collection(db, "opportunities"));
-        batch.set(p3, {title:'⚖️ Remote Opportunities for Lawyers/Attorneys',slug:'micro1-lawyers-attorneys',employerId:e4.id,orgName:'micro1',category:'Referral & Affiliate',employmentType:'Various Roles',location:'Remote',country:'Remote',remote:true,industry:'Legal',experience:'Expert',salary:{disclosed:true, text:'$100–$300 per hour', min:100},postedAt:iso(-3),deadline:iso(30),verified:true,isPartner:true,partnerName:'micro1',summary:'Are you a lawyer or attorney looking for remote work opportunities with competitive pay?',description:['Are you a lawyer or attorney looking for remote work opportunities with competitive pay?', 'Explore potential opportunities that allow you to put your legal expertise to work from anywhere.', 'Work remotely and explore opportunities aligned with your legal qualifications and experience.'],requirements:['Legal qualification'],applyMethod:'external',applyUrl:'https://refer.micro1.ai/referral/jobs?referralCode=f72b7bb9-9619-4843-949f-92f405f4f1bc&linkId=961aaa3d-60cb-4fc5-92b3-c73c62b4e171&utm_source=referral&utm_medium=share&utm_campaign=job_referral',status:'live',views:0,clicks:0});
-
-        await batch.commit();
-        toast("Database initialized successfully!");
-        await fetchFirestoreData();
-        render();
-      } catch(err) { toast("Seeding failed: " + err.message, "error"); console.error(err); }
       break;
     }
   }
@@ -2795,12 +2418,12 @@ document.addEventListener('submit', async (e) => {
         requirements: f.requirements.value.split('\n').map(s=>s.trim()).filter(Boolean),
         benefits: f.benefits.value.split('\n').map(s=>s.trim()).filter(Boolean),
         applyMethod: f.applyMethod.value, applyUrl: f.applyUrl.value.trim(),
-        status: 'pending', featured: false, views: 0, clicks: 0
+        status: 'live', featured: false, views: 0, clicks: 0 // Live immediately since no admin!
       };
       
       const newRef = doc(collection(db, "opportunities"));
       await setDoc(newRef, data);
-      toast('Listing submitted for review.');
+      toast('Listing created and published live!');
       closeModal(); 
       await fetchFirestoreData(); 
       render();
@@ -2849,7 +2472,7 @@ document.addEventListener('submit', async (e) => {
 function openListingForm(){
   openModal(`
     <div class="modal-h">
-      <div><h3>New opportunity</h3><p>All submissions are reviewed before publication.</p></div>
+      <div><h3>New opportunity</h3><p>Your listing will go live immediately.</p></div>
       <button class="icon-btn" data-action="close-modal">${ICON.x}</button>
     </div>
     <form data-form="listing-form">
@@ -2897,7 +2520,7 @@ function openListingForm(){
       </div>
       <div class="modal-f">
         <button type="button" class="btn btn-ghost" data-action="close-modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit for review</button>
+        <button type="submit" class="btn btn-primary">Publish Live</button>
       </div>
     </form>`);
 }
@@ -2927,4 +2550,4 @@ function openCampaignForm(){
 
 </script>
 </body>
-</html>
+   </html>
