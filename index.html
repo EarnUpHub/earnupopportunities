@@ -2647,9 +2647,16 @@ document.addEventListener('submit', async (e) => {
     if (type === 'signin'){
       const email = form.elements.email.value.trim();
       const pass = form.elements.password.value;
-      await signInWithEmailAndPassword(auth, email, pass);
-      toast('Welcome back!');
-      nav('#/dashboard');
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        toast('Welcome back!');
+        nav('#/dashboard');
+      } catch (error) {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+          throw new Error("No account found with this email. Please create an account first.");
+        }
+        throw error;
+      }
       return;
     }
 
@@ -2680,8 +2687,11 @@ document.addEventListener('submit', async (e) => {
         createdAt: new Date().toISOString().slice(0,10), profile: {}
       });
 
-      toast('Account created successfully!');
-      nav(role === 'employer' ? '#/employer/dashboard' : '#/dashboard');
+      // CRITICAL: Sign out immediately after signup so they must log in manually
+      await signOut(auth);
+
+      toast('Account created! Please sign in.');
+      nav('#/signin');
       return;
     }
 
